@@ -15,11 +15,20 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-   BooksAPI.search('Fantasy').then((books) => {
-     this.setState({ books })
-     console.log(this.state.books)
-   })
- }
+
+    BooksAPI.getAll().then((books) => {
+      books.forEach((book) => {
+        let shelvedBook = {
+          id: book.id,
+          title: book.title,
+          author: book.authors,
+          image: book.imageLinks.thumbnail,
+          whichShelf: book.shelf
+        }
+        console.log(shelvedBook)
+      })
+    })
+  }
 
   render() {
     return (
