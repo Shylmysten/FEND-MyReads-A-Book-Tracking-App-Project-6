@@ -1,7 +1,7 @@
 import React from 'react'
 import BookShelf from './BookShelf'
 
-class BookShelves extends React.Component {
+class BookCase extends React.Component {
   render() {
         const { shelves } = this.props
     return (
@@ -25,4 +25,4 @@ class BookShelves extends React.Component {
 
 }
 
-export default BookShelves
+export default BookCase
