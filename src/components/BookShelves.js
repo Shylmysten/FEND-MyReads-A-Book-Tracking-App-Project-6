@@ -7,13 +7,15 @@ class BookShelves extends React.Component {
     return (
       <div>
         {Object.keys(shelves).map(cur => {
-          cur === 'currentlyReading'? 'Currently Reading':
-          cur === 'wantToRead'? 'Want to Read':
-          cur === 'read'? 'Read': null;
-          return <BookShelf key={cur} title={
+
+          return <BookShelf key={
+            cur === 'currentlyReading'? cur:
+            cur === 'wantToRead'? cur:
+            cur === 'read'? cur: null
+          } title={
             cur === 'currentlyReading'? 'Currently Reading':
             cur === 'wantToRead'? 'Want to Read':
-            cur === 'read'? 'Read': null} bookShelf={this.props.shelves[cur]}/>
+            cur === 'read'? 'Read': null} books={this.props.shelves[cur]}/>
         })}
       </div>
     )
