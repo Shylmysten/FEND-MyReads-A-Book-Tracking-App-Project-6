@@ -11,7 +11,7 @@ class Library extends React.Component {
             <h1>MyReads</h1>
           </div>
           <div className="list-books-content">
-            <BookShelves/>
+            <BookShelves shelves={this.props.shelves}/>
           </div>
           <div className="open-search">
             <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
