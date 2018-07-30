@@ -4,32 +4,90 @@ import * as BooksAPI from './utils/BooksAPI'
 import './App.css'
 
 class BooksApp extends React.Component {
-  state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: false,
-    books: []
+  constructor() {
+    super();
+    this.state = {
+      /**
+       * TODO: Instead of using this state variable to keep track of which page
+       * we're on, use the URL in the browser's address bar. This will ensure that
+       * users can use the browser's back and forward buttons to navigate between
+       * pages, as well as provide a good URL they can bookmark and share.
+       */
+      showSearchPage: false,
+      shelves: {
+        currentlyReading: [],
+        wantToRead: [],
+        read: []
+      }
+
+    }
+
   }
 
   componentDidMount() {
 
     BooksAPI.getAll().then((books) => {
-      books.forEach((book) => {
-        let shelvedBook = {
-          id: book.id,
-          title: book.title,
-          author: book.authors,
-          image: book.imageLinks.thumbnail,
-          whichShelf: book.shelf
-        }
-        console.log(shelvedBook)
-      })
-    })
-  }
+
+      this.setState({...this.state, shelves: {
+        ...this.state.shelves,
+          currentlyReading: books.filter(book => book.shelf === 'currentlyReading'),
+          wantToRead: books.filter(book => book.shelf === 'wantToRead'),
+          read: books.filter(book => book.shelf === 'read')
+      }})
+
+      // console.log(this.state.shelves);
+
+
+
+    //   books.forEach((book) => {
+    //     let shelvedBook = {
+    //       id: book.id,
+    //       title: book.title,
+    //       author: book.authors,
+    //       image: book.imageLinks.thumbnail,
+    //       shelf: book.shelf
+    //     }
+    //     this.addBookToShelf(book.shelf, shelvedBook)
+    // })
+  })
+}
+
+
+  addBookToShelf = (shelf, book) => {
+      this.setState({...this.state, shelves: {
+        ...this.state.shelves,
+          [shelf]: [...this.state.shelves[shelf]].concat(book)
+      }})
+      console.log(this.state.shelves);
+    // switch (shelf) {
+    //   case ('currentlyReading'):
+    //   this.setState({...this.state, shelves: {
+    //     ...this.state.shelves,
+    //       [shelf]: [...this.state.shelves[shelf]].concat(book)
+    //   }})
+    //     break;
+    //   case ('wantToRead'):
+    //   this.setState({...this.state, shelves: {
+    //     ...this.state.shelves,
+    //       [shelf]: [...this.state.shelves[shelf]].concat(book)
+    //   }})
+    //     break;
+    //   case ('read'):
+    //   this.setState({...this.state, shelves: {
+    //     ...this.state.shelves,
+    //       [shelf]: [...this.state.shelves[shelf]].concat(book)
+    //   }})
+    //     break;
+    //   default:
+    //     return
+
+    }
+    // this.setState(prevState => ({
+    //   [shelf]: prevState[shelf].concat(book)
+    // }))
+  // }
+
+
 
   render() {
     return (
@@ -56,7 +114,7 @@ class BooksApp extends React.Component {
             </div>
           </div>
         ) : (
-          <Library/>
+          <Library shelves={this.state.shelves}/>
         )}
       </div>
     )
