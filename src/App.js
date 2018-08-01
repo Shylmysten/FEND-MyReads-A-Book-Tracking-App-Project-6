@@ -18,11 +18,17 @@ class BooksApp extends React.Component {
         currentlyReading: [],
         wantToRead: [],
         read: []
-      }
-
+      },
+      value: 'none'
     }
 
+    this.handleChange = this.handleChange.bind(this)
+
   }
+
+
+
+
 
   componentDidMount() {
 
@@ -53,7 +59,7 @@ class BooksApp extends React.Component {
 }
 
 
-  addBookToShelf = (shelf, book) => {
+  addBookToShelf = (book, shelf) => {
       this.setState({...this.state, shelves: {
         ...this.state.shelves,
           [shelf]: [...this.state.shelves[shelf]].concat(book)
@@ -88,6 +94,20 @@ class BooksApp extends React.Component {
   // }
 
 
+  removeBook = (book, currentShelf) => {
+    this.setState({...this.state, shelves: {
+      ...this.state.shelves,
+        [currentShelf]: [...this.state.shelves[currentShelf]].filter( b => b.id !== book.id)
+    }})
+    console.log(this.state.shelves);
+  }
+
+  handleChange(event) {
+    console.log(event.target.value);
+    this.setState({value: event.target.value});
+  }
+
+
 
   render() {
     return (
@@ -114,7 +134,7 @@ class BooksApp extends React.Component {
             </div>
           </div>
         ) : (
-          <Library shelves={this.state.shelves}/>
+          <Library shelves={this.state.shelves} value={this.state.value} onChangeHandler={this.handleChange}/>
         )}
       </div>
     )

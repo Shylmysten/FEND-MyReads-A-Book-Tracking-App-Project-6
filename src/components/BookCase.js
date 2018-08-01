@@ -6,16 +6,20 @@ class BookCase extends React.Component {
         const { shelves } = this.props
     return (
       <div>
-        {Object.keys(shelves).map(cur => {
+        {Object.keys(shelves).map(key => {
 
           return <BookShelf key={
-            cur === 'currentlyReading'? cur:
-            cur === 'wantToRead'? cur:
-            cur === 'read'? cur: null
+            key === 'currentlyReading'? key:
+            key === 'wantToRead'? key:
+            key === 'read'? key: null
           } title={
-            cur === 'currentlyReading'? 'Currently Reading':
-            cur === 'wantToRead'? 'Want to Read':
-            cur === 'read'? 'Read': null} books={this.props.shelves[cur]}/>
+            key === 'currentlyReading'? 'Currently Reading':
+            key === 'wantToRead'? 'Want to Read':
+            key === 'read'? 'Read': null}
+            books={this.props.shelves[key]}
+            value={this.props.value}
+            onChangeHandler={this.handleChange}
+          />
         })}
       </div>
     )

@@ -1,8 +1,9 @@
 import React from 'react'
-import BookShelves from './BookShelves'
+import BookCase from './BookCase'
 
 
 class Library extends React.Component {
+
   render() {
     return (
       <div>
@@ -11,7 +12,10 @@ class Library extends React.Component {
             <h1>MyReads</h1>
           </div>
           <div className="list-books-content">
-            <BookShelves shelves={this.props.shelves}/>
+            <BookCase shelves={this.props.shelves}
+              value={this.props.value}
+              onChangeHandler={this.handleChange}
+            />
           </div>
           <div className="open-search">
             <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
