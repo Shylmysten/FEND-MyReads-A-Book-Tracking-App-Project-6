@@ -8,7 +8,7 @@ class BookCase extends React.Component {
       <div>
         {Object.keys(shelves).map(key => {
 
-          return <BookShelf key={
+          return ( <BookShelf key={
             key === 'currentlyReading'? key:
             key === 'wantToRead'? key:
             key === 'read'? key: null
@@ -18,8 +18,8 @@ class BookCase extends React.Component {
             key === 'read'? 'Read': null}
             books={this.props.shelves[key]}
             value={this.props.value}
-            onChangeHandler={this.handleChange}
-          />
+            handleChange={this.props.handleChange.bind(this)}
+          /> )
         })}
       </div>
     )

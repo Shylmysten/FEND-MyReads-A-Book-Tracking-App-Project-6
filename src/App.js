@@ -41,6 +41,7 @@ class BooksApp extends React.Component {
           read: books.filter(book => book.shelf === 'read')
       }})
 
+
       // console.log(this.state.shelves);
 
 
@@ -102,9 +103,22 @@ class BooksApp extends React.Component {
     console.log(this.state.shelves);
   }
 
-  handleChange(event) {
-    console.log(event.target.value);
-    this.setState({value: event.target.value});
+  handleChange(e, book) {
+    BooksAPI.update(book, e.target.value);
+    BooksAPI.getAll().then((books) => {
+
+      this.setState({...this.state, shelves: {
+        ...this.state.shelves,
+          currentlyReading: books.filter(book => book.shelf === 'currentlyReading'),
+          wantToRead: books.filter(book => book.shelf === 'wantToRead'),
+          read: books.filter(book => book.shelf === 'read')
+      }})
+  })
+    // this.removeBook(book, book.shelf);
+    // this.addBookToShelf(book, e.target.value);
+    // console.log(e.target.value, book);
+        console.log(this.state.shelves);
+
   }
 
 
@@ -134,7 +148,11 @@ class BooksApp extends React.Component {
             </div>
           </div>
         ) : (
-          <Library shelves={this.state.shelves} value={this.state.value} onChangeHandler={this.handleChange}/>
+          <Library
+            shelves={this.state.shelves}
+            value={this.state.value}
+            handleChange={this.handleChange.bind(this)}
+          />
         )}
       </div>
     )

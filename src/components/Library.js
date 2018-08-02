@@ -14,7 +14,7 @@ class Library extends React.Component {
           <div className="list-books-content">
             <BookCase shelves={this.props.shelves}
               value={this.props.value}
-              onChangeHandler={this.handleChange}
+              handleChange={this.props.handleChange.bind(this)}
             />
           </div>
           <div className="open-search">
