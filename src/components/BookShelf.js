@@ -22,7 +22,7 @@ class BookShelf extends React.Component {
                 <div className="book-top">
                   <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url('${book.imageLinks.thumbnail}')` }}></div>
                   <ChangeShelf book={book}
-                  handleChange={this.props.handleChange.bind(this)}
+                  handleChange={this.props.handleChange}
                   value={this.props.value}
                   />
                 </div>

@@ -18,7 +18,7 @@ class BookCase extends React.Component {
             key === 'read'? 'Read': null}
             books={this.props.shelves[key]}
             value={this.props.value}
-            handleChange={this.props.handleChange.bind(this)}
+            handleChange={this.props.handleChange}
           /> )
         })}
       </div>
