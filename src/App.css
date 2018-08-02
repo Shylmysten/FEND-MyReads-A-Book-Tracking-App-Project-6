@@ -172,3 +172,9 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+option:hover,
+option:focus,
+option:active,
+option:checked { color: red; }
+option:not(:checked) { color: black; }
