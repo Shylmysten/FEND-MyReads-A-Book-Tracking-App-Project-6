@@ -33,7 +33,6 @@ class BooksApp extends React.Component {
   componentDidMount() {
 
     BooksAPI.getAll().then((books) => {
-      console.log(books);
       this.setState({...this.state, shelves: {
         ...this.state.shelves,
           currentlyReading: books.filter(book => book.shelf === 'currentlyReading'),
