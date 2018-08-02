@@ -33,6 +33,7 @@ class BooksApp extends React.Component {
   componentDidMount() {
 
     BooksAPI.getAll().then((books) => {
+
       this.setState({...this.state, shelves: {
         ...this.state.shelves,
           currentlyReading: books.filter(book => book.shelf === 'currentlyReading'),
@@ -103,20 +104,44 @@ class BooksApp extends React.Component {
   }
 
   handleChange(e, book) {
+    const oldShelf = book.shelf
+    // console.log(book.shelf);
+    e.persist();
+    BooksAPI.update(book, e.target.value);
+    book.shelf= e.target.value;
+    this.setState({shelves: {
+      ...this.state.shelves,
+        [oldShelf]: [...this.state.shelves[oldShelf]].filter( b => b.id !== book.id),
+        [e.target.value]: this.state.shelves[e.target.value].concat(book)
+      }
+    }, () => {console.log(this.state.shelves)})
 
-      this.setState({...this.state, shelves: {
-        ...this.state.shelves,
-        // remove book from current shelf
-        [book.shelf]: [...this.state.shelves[book.shelf]].filter( b => b.id !== book.id),
-        // add book to new shelf
-        [e.target.value]: [...this.state.shelves[e.target.value]].concat(book)
-      }})
-      BooksAPI.update(book, e.target.value);
 
+
+
+
+
+
+
+
+
+
+
+
+
+  //   BooksAPI.getAll().then((books) => {
+  //
+  //     this.setState({...this.state, shelves: {
+  //       ...this.state.shelves,
+  //         currentlyReading: books.filter(book => book.shelf === 'currentlyReading'),
+  //         wantToRead: books.filter(book => book.shelf === 'wantToRead'),
+  //         read: books.filter(book => book.shelf === 'read')
+  //     }})
+  // })
     // this.removeBook(book, book.shelf);
     // this.addBookToShelf(book, e.target.value);
     // console.log(e.target.value, book);
-        console.log(this.state.shelves);
+        // console.log(this.state.shelves);
 
   }
 
@@ -150,7 +175,7 @@ class BooksApp extends React.Component {
           <Library
             shelves={this.state.shelves}
             value={this.state.value}
-            handleChange={this.handleChange.bind(this)}
+            handleChange={this.handleChange}
           />
         )}
       </div>
