@@ -33,7 +33,7 @@ class BooksApp extends React.Component {
   componentDidMount() {
 
     BooksAPI.getAll().then((books) => {
-
+      console.log(books);
       this.setState({...this.state, shelves: {
         ...this.state.shelves,
           currentlyReading: books.filter(book => book.shelf === 'currentlyReading'),
@@ -104,16 +104,16 @@ class BooksApp extends React.Component {
   }
 
   handleChange(e, book) {
-    BooksAPI.update(book, e.target.value);
-    BooksAPI.getAll().then((books) => {
 
       this.setState({...this.state, shelves: {
         ...this.state.shelves,
-          currentlyReading: books.filter(book => book.shelf === 'currentlyReading'),
-          wantToRead: books.filter(book => book.shelf === 'wantToRead'),
-          read: books.filter(book => book.shelf === 'read')
+        // remove book from current shelf
+        [book.shelf]: [...this.state.shelves[book.shelf]].filter( b => b.id !== book.id),
+        // add book to new shelf
+        [e.target.value]: [...this.state.shelves[e.target.value]].concat(book)
       }})
-  })
+      BooksAPI.update(book, e.target.value);
+
     // this.removeBook(book, book.shelf);
     // this.addBookToShelf(book, e.target.value);
     // console.log(e.target.value, book);
