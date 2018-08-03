@@ -18,8 +18,7 @@ class BooksApp extends React.Component {
         currentlyReading: [],
         wantToRead: [],
         read: []
-      },
-      value: 'none'
+      }
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -103,6 +102,7 @@ class BooksApp extends React.Component {
     console.log(this.state.shelves);
   }
 
+
   handleChange(e, book) {
     const oldShelf = book.shelf
     // console.log(book.shelf);
@@ -172,11 +172,15 @@ class BooksApp extends React.Component {
             </div>
           </div>
         ) : (
+          <div>
           <Library
             shelves={this.state.shelves}
-            value={this.state.value}
             handleChange={this.handleChange}
           />
+          <div className="open-search">
+            <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
+          </div>
+        </div>
         )}
       </div>
     )
