@@ -1,4 +1,5 @@
 import React from 'react'
+import { Route } from 'react-router-dom'
 import Library from './components/Library'
 import Search from './components/search'
 import * as BooksAPI from './utils/BooksAPI'
@@ -137,24 +138,18 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <Search closeSearch={() => {
-            this.setState({ showSearchPage: false })
-          }}/>
-        ) : (
-          <div>
+        <Route exact path='/' render={() => (
           <Library
             shelves={this.state.shelves}
             handleChange={this.handleChange}
-            openSearch={() => {
-              this.setState({ showSearchPage: true })
-            }}
           />
-        </div>
-        )}
+        )}/>
+        <Route path='/search' render={() => (
+          <Search/>
+        )}/>
       </div>
-    )
-  }
+
+    )}
 }
 
 export default BooksApp
