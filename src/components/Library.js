@@ -16,9 +16,9 @@ class Library extends React.Component {
               handleChange={this.props.handleChange.bind(this)}
             />
           </div>
-          <div className="open-search">
-            <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
-          </div>
+          <button className="open-search">
+            <a onClick={this.props.openSearch}>Add a book</a>
+          </button>
         </div>
       </div>
     )
