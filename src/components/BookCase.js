@@ -7,7 +7,9 @@ class BookCase extends React.Component {
     return (
       <div>
         {Object.keys(shelves).map(key => {
-
+          if (key === 'none') {
+            return
+          }
           return ( <BookShelf key={
             key === 'currentlyReading'? key:
             key === 'wantToRead'? key:
