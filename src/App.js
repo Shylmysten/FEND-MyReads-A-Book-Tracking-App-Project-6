@@ -8,6 +8,7 @@ import nocover from './icons/nocover.jpg'
 import './App.css'
 
 class BooksApp extends React.Component {
+
   constructor() {
     super();
     this.state = {
@@ -61,22 +62,31 @@ class BooksApp extends React.Component {
 
   handleChange = (e, book) => {
     const oldShelf = book.shelf
-    // console.log(book.shelf);
+    const newShelf = e.target.value
+
+    // we need our event to stick around a little longer
     e.persist();
-    book.shelf= e.target.value;
+
+    // put the book on the shelf the user selected
+    book.shelf= newShelf;
 
     this.fixEmptyMissingProperties(book)
 
-    BooksAPI.update(book, e.target.value);
+    // update the books location in the API so that it reflects this change when we reload the main page
+    BooksAPI.update(book,newShelf);
+
+    // Remove our book from the old shelf and place it on the new shelf
     this.setState({shelves: {
       ...this.state.shelves,
         [oldShelf]: [...this.state.shelves[oldShelf]].filter( b => b.id !== book.id),
-        [e.target.value]: this.state.shelves[e.target.value].concat(book)
+        [newShelf]: this.state.shelves[newShelf].concat(book)
       }
-    }, () => {console.log(this.state.shelves)})
-  }
+    },
+      // show me the locations of all of the books on my shelves
+      () => {console.log(this.state.shelves)})
+    }
 
-
+  // clear our query and searchResults
   clearQuery = () => {
    this.setState({
      query: '',
@@ -85,7 +95,7 @@ class BooksApp extends React.Component {
   }
 
 
-
+  // take the user input and set it in our state, then call search to look for books in category
   updateQuery = (query) => {
     this.setState({
       query: query
@@ -95,9 +105,10 @@ class BooksApp extends React.Component {
 
 
 
-
+  // search for books by the string the user input
   search = (query) => {
 
+    // if the searchBar is empty clear/ed clear the searchResults too
     if (query === '') {
       this.setState({
         searchResults: []
@@ -105,29 +116,42 @@ class BooksApp extends React.Component {
       return;
     }
 
+    // make a call to our API to search for the term then lets look at the results
     BooksAPI.search(query)
     .then((books) => {
 
+      // make one array of books out of all the books on my shelves
       let bookshelves = this.state.shelves.currentlyReading.concat(this.state.shelves.wantToRead, this.state.shelves.read);
 
+      // insure we have a clean search to start with
       this.setState({ searchResults: [] })
 
+      // loop over the books and for each book
       books.map(book => {
 
+        // fix missing or empty properties
         this.fixEmptyMissingProperties(book)
 
+        // then loop over all the books on our shelves
         bookshelves.map(item => {
 
+          // is there a book in our searchResults that is already on our shelves
           if (item.id === book.id) {
+
+            // Tell me which book and what shelf it was found on
             console.log(`We have a Match ${book.title} ${item.shelf}`);
+
+            // set the book.shelf in our searchResults so that it reflects its position on our shelf
             book.shelf= item.shelf;
           }
 
         })
 
+        // now we need to push that book into an array so React can display it
         this.setState({
           searchResults: this.state.searchResults.concat(book)
         },
+        // show me the book and let's make sure it was added to the state correctly
         () => console.log(book, this.state.searchResults)
         )
 
@@ -135,7 +159,7 @@ class BooksApp extends React.Component {
     })
     }).catch( error => {
 
-
+      // if there is an error, and it has a message, and that message includes books.map is not a function - then we either had an invalid search or nothing was returned for our search term
       if (error.hasOwnProperty('message') && error.message.includes('books.map is not a function')) {
         alert('Your search was invalid or returned no results, please try again!');
       }
