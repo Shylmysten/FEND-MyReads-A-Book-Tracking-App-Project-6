@@ -2,18 +2,15 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import BookGrid from './BookGrid'
 
-class Search extends Component {
-  state = {
-    query: ''
-  }
 
-  updateQuery = (query) => {
-    this.setState({ query: query.trim() })
-  }
+class Search extends Component {
+
 
   render() {
 
-    const books = Object.keys(this.props.shelves).map(key => this.props.shelves[key])
+    const { shelves, query, searchResults } = this.props
+    const books = searchResults
+
 
     return(
       <div className="search-books">
@@ -33,15 +30,18 @@ class Search extends Component {
             <input
               type="text"
               placeholder="Search by title or author"
-              value={this.state.query}
-              onChange={(event) => this.updateQuery(event.target.value)}
+              value={this.props.query}
+              onChange={(e) => this.props.updateQuery(e.target.value)}
             />
 
           </div>
         </div>
         <div className="search-books-results">
-          {/* <BookGrid books={this.props.books} /> */}
-        {JSON.stringify(this.state)}
+          <BookGrid
+            books={searchResults}
+            handleChange={this.props.handleChange}
+          />
+
         </div>
       </div>
 
