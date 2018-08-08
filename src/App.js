@@ -28,6 +28,7 @@ class BooksApp extends React.Component {
     }
     this.updateQuery = debounce(this.updateQuery, 500);
     this.handleChange = this.handleChange.bind(this)
+    this.clearQuery = this.clearQuery.bind(this)
   }
 
 
@@ -53,67 +54,7 @@ class BooksApp extends React.Component {
           wantToRead: books.filter(book => book.shelf === 'wantToRead'),
           read: books.filter(book => book.shelf === 'read')
       }})
-
-
-      // console.log(this.state.shelves);
-
-
-
-    //   books.forEach((book) => {
-    //     let shelvedBook = {
-    //       id: book.id,
-    //       title: book.title,
-    //       author: book.authors,
-    //       image: book.imageLinks.thumbnail,
-    //       shelf: book.shelf
-    //     }
-    //     this.addBookToShelf(book.shelf, shelvedBook)
-    // })
-  })
-}
-
-
-  addBookToShelf = (book, shelf) => {
-      this.setState({...this.state, shelves: {
-        ...this.state.shelves,
-          [shelf]: [...this.state.shelves[shelf]].concat(book)
-      }})
-      console.log(this.state.shelves);
-    // switch (shelf) {
-    //   case ('currentlyReading'):
-    //   this.setState({...this.state, shelves: {
-    //     ...this.state.shelves,
-    //       [shelf]: [...this.state.shelves[shelf]].concat(book)
-    //   }})
-    //     break;
-    //   case ('wantToRead'):
-    //   this.setState({...this.state, shelves: {
-    //     ...this.state.shelves,
-    //       [shelf]: [...this.state.shelves[shelf]].concat(book)
-    //   }})
-    //     break;
-    //   case ('read'):
-    //   this.setState({...this.state, shelves: {
-    //     ...this.state.shelves,
-    //       [shelf]: [...this.state.shelves[shelf]].concat(book)
-    //   }})
-    //     break;
-    //   default:
-    //     return
-
-    }
-    // this.setState(prevState => ({
-    //   [shelf]: prevState[shelf].concat(book)
-    // }))
-  // }
-
-
-  removeBook = (book, currentShelf) => {
-    this.setState({...this.state, shelves: {
-      ...this.state.shelves,
-        [currentShelf]: [...this.state.shelves[currentShelf]].filter( b => b.id !== book.id)
-    }})
-    console.log(this.state.shelves);
+    })
   }
 
 
@@ -136,21 +77,14 @@ class BooksApp extends React.Component {
         [e.target.value]: this.state.shelves[e.target.value].concat(book)
       }
     }, () => {console.log(this.state.shelves)})
+  }
 
-  //   BooksAPI.getAll().then((books) => {
-  //
-  //     this.setState({...this.state, shelves: {
-  //       ...this.state.shelves,
-  //         currentlyReading: books.filter(book => book.shelf === 'currentlyReading'),
-  //         wantToRead: books.filter(book => book.shelf === 'wantToRead'),
-  //         read: books.filter(book => book.shelf === 'read')
-  //     }})
-  // })
-    // this.removeBook(book, book.shelf);
-    // this.addBookToShelf(book, e.target.value);
-    // console.log(e.target.value, book);
-        // console.log(this.state.shelves);
 
+  clearQuery = () => {
+   this.setState({
+     query: '',
+     searchResults: []
+    })
   }
 
 
@@ -205,14 +139,16 @@ class BooksApp extends React.Component {
         this.setState({
           searchResults: this.state.searchResults.concat(book)
         },
-        // () => console.log(book, this.state.searchResults)
+        () => console.log(book, this.state.searchResults)
        )
 
 
     })
     }).catch( error => {
-      console.log(error.message);
-      console.log(`${error.message}`)
+
+
+      // console.log(error.message);
+      // console.log(`${error.message}`)
       if (error.hasOwnProperty('message') && error.message.includes('books.map is not a function')) {
         alert('Your search was invalid or returned no results, please try again!');
       }
@@ -239,6 +175,7 @@ class BooksApp extends React.Component {
             handleChange={this.handleChange}
             updateQuery={this.updateQuery}
             searchResults={this.state.searchResults}
+            clearQuery={this.clearQuery}
           />
         )}/>
       </div>
