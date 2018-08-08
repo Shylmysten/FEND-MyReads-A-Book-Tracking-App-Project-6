@@ -26,20 +26,11 @@ class BooksApp extends React.Component {
   }
 
 
-
-
-
   componentDidMount() {
 
     BooksAPI.getAll().then((books) => {
       books.map(book => {
-        if (!('authors' in book)) {
-          book.authors = ' '
-        }
-
-        if (!('imageLinks' in book)) {
-          book.imageLinks = {thumbnail: nocover}
-        }
+        this.fixEmptyMissingProperties(book)
       })
 
       this.setState({...this.state, shelves: {
@@ -52,18 +43,30 @@ class BooksApp extends React.Component {
   }
 
 
-  handleChange(e, book) {
+    fixEmptyMissingProperties = (book) => {
+      if (!('shelf' in book)) {
+        book.shelf = 'none'
+      }
+
+      if (!('authors' in book)) {
+        book.authors = ' '
+      }
+
+      if (!('imageLinks' in book)) {
+        book.imageLinks = {thumbnail: nocover}
+      }
+    }
+
+
+
+  handleChange = (e, book) => {
     const oldShelf = book.shelf
     // console.log(book.shelf);
     e.persist();
     book.shelf= e.target.value;
-    if (!('authors' in book)) {
-      book.authors = ' '
-    }
 
-    if (!('imageLinks' in book)) {
-      book.imageLinks = {thumbnail: nocover}
-    }
+    this.fixEmptyMissingProperties(book)
+
     BooksAPI.update(book, e.target.value);
     this.setState({shelves: {
       ...this.state.shelves,
@@ -111,17 +114,7 @@ class BooksApp extends React.Component {
 
       books.map(book => {
 
-        if (!('shelf' in book)) {
-          book.shelf = 'none'
-        }
-
-        if (!('authors' in book)) {
-          book.authors = ' '
-        }
-
-        if (!('imageLinks' in book)) {
-          book.imageLinks = {thumbnail: nocover}
-        }
+        this.fixEmptyMissingProperties(book)
 
         bookshelves.map(item => {
 
@@ -131,11 +124,12 @@ class BooksApp extends React.Component {
           }
 
         })
+
         this.setState({
           searchResults: this.state.searchResults.concat(book)
         },
         () => console.log(book, this.state.searchResults)
-       )
+        )
 
 
     })
