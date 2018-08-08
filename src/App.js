@@ -92,6 +92,7 @@ class BooksApp extends React.Component {
 
 
 
+
   search = (query) => {
 
     if (query === '') {
@@ -141,8 +142,6 @@ class BooksApp extends React.Component {
     }).catch( error => {
 
 
-      // console.log(error.message);
-      // console.log(`${error.message}`)
       if (error.hasOwnProperty('message') && error.message.includes('books.map is not a function')) {
         alert('Your search was invalid or returned no results, please try again!');
       }
