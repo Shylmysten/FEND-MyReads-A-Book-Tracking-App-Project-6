@@ -37,6 +37,15 @@ class BooksApp extends React.Component {
   componentDidMount() {
 
     BooksAPI.getAll().then((books) => {
+      books.map(book => {
+        if (!('authors' in book)) {
+          book.authors = ' '
+        }
+
+        if (!('imageLinks' in book)) {
+          book.imageLinks = {thumbnail: nocover}
+        }
+      })
 
       this.setState({...this.state, shelves: {
         ...this.state.shelves,
@@ -112,9 +121,15 @@ class BooksApp extends React.Component {
     const oldShelf = book.shelf
     // console.log(book.shelf);
     e.persist();
-    BooksAPI.update(book, e.target.value);
     book.shelf= e.target.value;
+    if (!('authors' in book)) {
+      book.authors = ' '
+    }
 
+    if (!('imageLinks' in book)) {
+      book.imageLinks = {thumbnail: nocover}
+    }
+    BooksAPI.update(book, e.target.value);
     this.setState({shelves: {
       ...this.state.shelves,
         [oldShelf]: [...this.state.shelves[oldShelf]].filter( b => b.id !== book.id),
@@ -182,7 +197,7 @@ class BooksApp extends React.Component {
         bookshelves.map(item => {
 
           if (item.id === book.id) {
-            console.log('We have a Match');
+            console.log(`We have a Match ${book.title} ${item.shelf}`);
             book.shelf= item.shelf;
           }
 
