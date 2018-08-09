@@ -8,6 +8,7 @@ class BookCase extends React.Component {
       <div>
         {Object.keys(shelves).map(key => {
           if (key === 'none') {
+            // eslint-disable-next-line
             return
           }
           return ( <BookShelf key={

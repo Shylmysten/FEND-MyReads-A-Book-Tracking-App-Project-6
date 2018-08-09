@@ -30,6 +30,7 @@ class BooksApp extends React.Component {
   componentDidMount() {
 
     BooksAPI.getAll().then((books) => {
+      // eslint-disable-next-line
       books.map(book => {
         this.fixEmptyMissingProperties(book)
       })
@@ -127,12 +128,14 @@ class BooksApp extends React.Component {
       this.setState({ searchResults: [] })
 
       // loop over the books and for each book
+      // eslint-disable-next-line
       books.map(book => {
 
         // fix missing or empty properties
         this.fixEmptyMissingProperties(book)
 
         // then loop over all the books on our shelves
+        // eslint-disable-next-line
         bookshelves.map(item => {
 
           // is there a book in our searchResults that is already on our shelves
