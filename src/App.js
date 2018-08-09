@@ -1,6 +1,6 @@
 import React from 'react'
 import { debounce } from 'lodash'
-import { Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import Library from './components/Library'
 import Search from './components/search'
 import * as BooksAPI from './utils/BooksAPI'
@@ -177,21 +177,23 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <Route exact path='/' render={() => (
-          <Library
-            shelves={this.state.shelves}
-            handleChange={this.handleChange}
-          />
-        )}/>
-        <Route path='/search' render={() => (
-          <Search
-            shelves={this.state.shelves}
-            handleChange={this.handleChange}
-            updateQuery={this.updateQuery}
-            searchResults={this.state.searchResults}
-            clearQuery={this.clearQuery}
-          />
-        )}/>
+        <Switch>
+          <Route exact path='/' render={() => (
+            <Library
+              shelves={this.state.shelves}
+              handleChange={this.handleChange}
+            />
+          )}/>
+          <Route path='/search' render={() => (
+            <Search
+              shelves={this.state.shelves}
+              handleChange={this.handleChange}
+              updateQuery={this.updateQuery}
+              searchResults={this.state.searchResults}
+              clearQuery={this.clearQuery}
+            />
+          )}/>
+      </Switch>
       </div>
 
     )}
